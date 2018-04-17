@@ -12,6 +12,9 @@ namespace GruppFemWCF
     // NOTE: In order to launch WCF Test Client for testing this service, please select Service1.svc or Service1.svc.cs at the Solution Explorer and start debugging.
     public class Service1 : IService1
     {
+
+        GruppFemdbEntities db = new GruppFemdbEntities();
+
         public string GetData(int value)
         {
             return string.Format("You entered: {0}", value);
@@ -28,6 +31,93 @@ namespace GruppFemWCF
                 composite.StringValue += "Suffix";
             }
             return composite;
+        }
+
+        public List<UserInfo> GetUserInfo()
+        {
+
+            GruppFemdbEntities db = new GruppFemdbEntities();
+            List<UserInfo> infoList = new List<UserInfo>();
+
+            List<User> dbUserList = db.User.ToList();
+
+            foreach (User item in dbUserList)
+            {
+
+                UserInfo loopInfo = new UserInfo();
+                loopInfo.ID = item.Id;
+                loopInfo.Username = item.Username;
+                loopInfo.Password = item.Password;
+                loopInfo.FName = item.firstname;
+                loopInfo.LName = item.lastname;
+                loopInfo.Email = item.Email;
+                infoList.Add(loopInfo);
+
+            }
+
+            return infoList;
+
+        }
+
+        public List<EstablishmentInfo> GetEstablishmentInfo()
+        {
+
+            List<EstablishmentInfo> infoList = new List<EstablishmentInfo>();
+
+            List<Establishment> dbEstablishmentList = db.Establishment.ToList();
+
+            foreach (Establishment item in dbEstablishmentList)
+            {
+
+                EstablishmentInfo loopInfo = new EstablishmentInfo();
+                loopInfo.ID = item.Id;
+                loopInfo.Name = item.Name;
+                loopInfo.Description = item.Description;
+                infoList.Add(loopInfo);
+
+            }
+
+            return infoList;
+
+        }
+
+        public void DeleteUser(int userID)
+        {
+
+            User selectedUser = db.User.Find(userID);
+            db.User.Remove(selectedUser);
+            db.SaveChanges();
+        }
+
+        public void DeleteEstablishment(int establishmentID)
+        {
+
+            Establishment selectedEstablishment = db.Establishment.Find(establishmentID);
+            db.Establishment.Remove(selectedEstablishment);
+            db.SaveChanges();
+        }
+
+        public void CreateUser(string username, string password, string firstname, string lastname, string email)
+        {
+            User createdUser = new User();
+            createdUser.Username = username;
+            createdUser.Password = password;
+            createdUser.firstname = firstname;
+            createdUser.lastname = lastname;
+            createdUser.Email = email;
+
+            db.User.Add(createdUser);
+            db.SaveChanges();
+        }
+
+        public void CreateEstablishment(string name, string description)
+        {
+            Establishment createdEstablishment = new Establishment();
+            createdEstablishment.Name = name;
+            createdEstablishment.Description = description;
+            
+            db.Establishment.Add(createdEstablishment);
+            db.SaveChanges();
         }
     }
 }

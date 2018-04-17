@@ -19,6 +19,20 @@ namespace GruppFemWCF
         [OperationContract]
         CompositeType GetDataUsingDataContract(CompositeType composite);
 
+        [OperationContract]
+        List<UserInfo> GetUserInfo();
+
+        [OperationContract]
+        List<EstablishmentInfo> GetEstablishmentInfo();
+        [OperationContract]
+        void DeleteUser(int userID);
+        [OperationContract]
+        void DeleteEstablishment(int establishmentID);
+        [OperationContract]
+        void CreateUser(string username, string password, string firstname, string lastname, string email);
+        [OperationContract]
+        void CreateEstablishment(string name, string description);
+
         // TODO: Add your service operations here
     }
 
@@ -43,5 +57,36 @@ namespace GruppFemWCF
             get { return stringValue; }
             set { stringValue = value; }
         }
+
+        
+    }
+
+    [DataContract]
+    public class UserInfo
+    {
+        [DataMember]
+        public int ID { get; set; }
+        [DataMember]
+        public string Username { get; set; }
+        [DataMember]
+        public string Password { get; set; }
+        [DataMember]
+        public string FName { get; set; }
+        [DataMember]
+        public string LName { get; set; }
+        [DataMember]
+        public string Email { get; set; }
+    }
+    [DataContract]
+    public class EstablishmentInfo
+    {
+        [DataMember]
+        public int ID { get; set; }
+        [DataMember]
+        public string Name { get; set; }
+        [DataMember]
+        public string Description{ get; set; }
+        
+       
     }
 }
