@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.ServiceModel;
@@ -117,6 +118,30 @@ namespace GruppFemWCF
             createdEstablishment.Description = description;
             
             db.Establishment.Add(createdEstablishment);
+            db.SaveChanges();
+        }
+
+        public void UpdateUser(int userID, string username, string password, string firstname, string lastname, string email)
+        {
+            User selectedUser = new User();
+            selectedUser = db.User.Find(userID);
+            selectedUser.Username = username;
+            selectedUser.Password = password;
+            selectedUser.firstname = firstname;
+            selectedUser.lastname = lastname;
+            selectedUser.Email = email;
+            db.Entry(selectedUser).State = EntityState.Modified;
+            db.SaveChanges();
+
+        }
+
+        public void UpdateEstablishment(int establishmentID, string name, string description)
+        {
+            Establishment selectedEstablishment = new Establishment();
+            selectedEstablishment = db.Establishment.Find(establishmentID);
+            selectedEstablishment.Name = name;
+            selectedEstablishment.Description = description;
+            db.Entry(selectedEstablishment).State = EntityState.Modified;
             db.SaveChanges();
         }
     }

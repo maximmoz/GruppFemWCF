@@ -32,7 +32,10 @@ namespace GruppFemWCF
         void CreateUser(string username, string password, string firstname, string lastname, string email);
         [OperationContract]
         void CreateEstablishment(string name, string description);
-
+        [OperationContract]
+        void UpdateUser(int userID, string username, string password, string firstname, string lastname, string email);
+        [OperationContract]
+        void UpdateEstablishment(int establishmentID, string name, string description);
         // TODO: Add your service operations here
     }
 
