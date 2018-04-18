@@ -4,8 +4,8 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="1941bda232b34d2f84f773bcf578435f" Name="Diagram1">
-        <EntityTypeShape EntityType="GruppFemdbModel.Establishment" Width="1.5" PointX="0.75" PointY="0.875" IsExpanded="true" />
+      <Diagram DiagramId="c92b2c540853446ea4a945cfa6a064c6" Name="Diagram1">
+        <EntityTypeShape EntityType="GruppFemdbModel.Establishment" Width="1.5" PointX="0.75" PointY="1" IsExpanded="true" />
         <EntityTypeShape EntityType="GruppFemdbModel.User" Width="1.5" PointX="0.75" PointY="5" IsExpanded="true" />
         <EntityTypeShape EntityType="GruppFemdbModel.UserRating" Width="1.5" PointX="3" PointY="0.875" IsExpanded="true" />
         <AssociationConnector Association="GruppFemdbModel.FK__UserRatin__Estab__4316F928" ManuallyRouted="false" />
