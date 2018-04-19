@@ -124,6 +124,7 @@ namespace GruppFemWCF
         public void UpdateUser(int userID, string username, string password, string firstname, string lastname, string email)
         {
             User selectedUser = new User();
+            
             selectedUser = db.User.Find(userID);
             selectedUser.Username = username;
             selectedUser.Password = password;
