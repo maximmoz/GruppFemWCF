@@ -125,6 +125,7 @@ namespace GruppFemWCF
         {
             User selectedUser = new User();
             
+
             selectedUser = db.User.Find(userID);
             selectedUser.Username = username;
             selectedUser.Password = password;
