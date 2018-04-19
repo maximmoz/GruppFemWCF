@@ -36,6 +36,8 @@ namespace GruppFemWCF
         void UpdateUser(int userID, string username, string password, string firstname, string lastname, string email);
         [OperationContract]
         void UpdateEstablishment(int establishmentID, string name, string description);
+        [OperationContract]
+        bool LoginUser(string username, string password);
         // TODO: Add your service operations here
     }
 

@@ -146,5 +146,36 @@ namespace GruppFemWCF
             db.Entry(selectedEstablishment).State = EntityState.Modified;
             db.SaveChanges();
         }
+
+        public bool LoginUser(string username, string password)
+        {
+            
+
+            if(CheckUser(username, password) == true)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public bool CheckUser(string username, string password)
+        {
+
+            var user = from row in db.User
+                       where row.Username == username.ToUpper()
+                       && row.Password == password select row;
+
+            if (user.Count() == 1)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 }
