@@ -23,7 +23,7 @@ namespace GruppFemWCF
         List<UserInfo> GetUserInfo();
 
         [OperationContract]
-        List<EstablishmentInfo> GetEstablishmentInfo();
+        List<EstablishmentInfo> GetEstablishmentInfo(int? userID);
         [OperationContract]
         void DeleteUser(int userID);
         [OperationContract]
@@ -35,9 +35,11 @@ namespace GruppFemWCF
         [OperationContract]
         void UpdateUser(int userID, string username, string password, string firstname, string lastname, string email);
         [OperationContract]
-        void UpdateEstablishment(int establishmentID, string name, string description);
+        void UpdateEstablishment(int establishmentID, string name, string description, int rating, int userID);
         [OperationContract]
         bool LoginUser(string username, string password);
+        [OperationContract]
+        int GetUserID(string username, string password);
         // TODO: Add your service operations here
     }
 
@@ -91,7 +93,15 @@ namespace GruppFemWCF
         public string Name { get; set; }
         [DataMember]
         public string Description{ get; set; }
-        
-       
+        [DataMember]
+        public int UserRating { get; set; }
+        [DataMember]
+        public double Rating { get; set; }
+        [DataMember]
+        public List<int> UserID { get; set; }
+        [DataMember]
+        public List<double> URating { get; set; }
+        [DataMember]
+        public List<int> EstablishmentID { get; set; }
     }
 }
