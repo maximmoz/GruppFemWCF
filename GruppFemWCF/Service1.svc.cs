@@ -105,6 +105,12 @@ namespace GruppFemWCF
                         idList.Add(userID.Value);
                         ratingList.Add(checkRating);
                     }
+                    else
+                    {
+                        var hej = 0;
+                        idList.Add(userID.Value);
+                        ratingList.Add(hej);
+                    }
                 }
                 loopInfo.URating = ratingList;
                 loopInfo.UserID = idList;
