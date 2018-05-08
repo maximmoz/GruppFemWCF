@@ -27,19 +27,18 @@ namespace GruppFemWCF
         [OperationContract]
         void DeleteUser(int userID);
         [OperationContract]
-        void DeleteEstablishment(int establishmentID);
-        [OperationContract]
         void CreateUser(string username, string password, string firstname, string lastname, string email);
-        [OperationContract]
-        void CreateEstablishment(string name, string description);
         [OperationContract]
         void UpdateUser(int userID, string username, string password, string firstname, string lastname, string email);
         [OperationContract]
-        void UpdateEstablishment(int establishmentID, string name, string description, int rating, int userID);
+        void UpdateEstablishment(int establishmentID, int rating, int userID);
         [OperationContract]
         bool LoginUser(string username, string password);
         [OperationContract]
         int GetUserID(string username, string password);
+        [OperationContract]
+        List<EstablishmentInfo> GetEstablishments();
+
         // TODO: Add your service operations here
     }
 

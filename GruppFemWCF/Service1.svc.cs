@@ -15,7 +15,7 @@ namespace GruppFemWCF
     {
 
         GruppFemdbEntities db = new GruppFemdbEntities();
-
+        
         public string GetData(int value)
         {
             return string.Format("You entered: {0}", value);
@@ -84,24 +84,24 @@ namespace GruppFemWCF
                                    select row).ToList();
 
                 foreach (var itemRating in ratingCount)
-                {                  
-                        ratingSummary += itemRating.Rating;
+                {
+                    ratingSummary += itemRating.Rating;
                 }
                 loopInfo.Rating = (ratingSummary / ratingCount.Count());
 
-                if(userID != null)
+                if (userID != null)
                 {
                     var uRating = (from row in db.UserRating
-                                  where row.UserID == userID
-                                  && row.EstablishmentID == item.Id
-                                  select row);
-                    
-                    if(uRating.Count() == 1)
+                                   where row.UserID == userID
+                                   && row.EstablishmentID == item.Id
+                                   select row);
+
+                    if (uRating.Count() == 1)
                     {
                         var checkRating = (from row in db.UserRating
-                                       where row.UserID == userID
-                                       && row.EstablishmentID == item.Id
-                                       select row.Rating).First();
+                                           where row.UserID == userID
+                                           && row.EstablishmentID == item.Id
+                                           select row.Rating).First();
                         idList.Add(userID.Value);
                         ratingList.Add(checkRating);
                     }
@@ -122,19 +122,54 @@ namespace GruppFemWCF
 
         }
 
+        public List<EstablishmentInfo> GetEstablishments()
+        {
+            List<EstablishmentInfo> infoList = new List<EstablishmentInfo>();
+
+            List<Establishment> dbEstablishmentList = db.Establishment.ToList();
+
+            foreach (Establishment item in dbEstablishmentList)
+            {
+
+                EstablishmentInfo loopInfo = new EstablishmentInfo();
+                loopInfo.ID = item.Id;
+                loopInfo.Name = item.Name;
+                loopInfo.Description = item.Description;
+                double ratingSummary = 0;
+                List<UserRating> dbRatingList = db.UserRating.ToList();
+                var ratingCount = (from row in db.UserRating
+                                   where row.EstablishmentID == item.Id
+                                   select row).ToList();
+
+                foreach (var itemRating in ratingCount)
+                {
+                    ratingSummary += itemRating.Rating;
+                }
+                loopInfo.Rating = (ratingSummary / ratingCount.Count());
+                infoList.Add(loopInfo);
+                ratingSummary = 0;
+            }
+            return infoList;
+
+        }
+
+
         public void DeleteUser(int userID)
         {
 
             User selectedUser = db.User.Find(userID);
+
+            var ratingCount = (from row in db.UserRating
+                               where row.UserID == userID
+                               select row).ToList();
+            foreach (var itemRating in ratingCount)
+            {
+                UserRating selectedUserRating = db.UserRating.Find(userID, itemRating.EstablishmentID);
+                db.UserRating.Remove(selectedUserRating);
+            }
+
+            
             db.User.Remove(selectedUser);
-            db.SaveChanges();
-        }
-
-        public void DeleteEstablishment(int establishmentID)
-        {
-
-            Establishment selectedEstablishment = db.Establishment.Find(establishmentID);
-            db.Establishment.Remove(selectedEstablishment);
             db.SaveChanges();
         }
 
@@ -148,16 +183,6 @@ namespace GruppFemWCF
             createdUser.Email = email;
 
             db.User.Add(createdUser);
-            db.SaveChanges();
-        }
-
-        public void CreateEstablishment(string name, string description)
-        {
-            Establishment createdEstablishment = new Establishment();
-            createdEstablishment.Name = name;
-            createdEstablishment.Description = description;
-            
-            db.Establishment.Add(createdEstablishment);
             db.SaveChanges();
         }
 
@@ -175,7 +200,7 @@ namespace GruppFemWCF
 
         }
 
-        public void UpdateEstablishment(int establishmentID, string name, string description, int rating, int userID)
+        public void UpdateEstablishment(int establishmentID, int rating, int userID)
         {
 
             Establishment selectedEstablishment = new Establishment();
@@ -185,9 +210,9 @@ namespace GruppFemWCF
             userRating.Rating = rating;
 
             var uRating = from row in db.UserRating
-                       where row.UserID == userID
-                       && row.EstablishmentID == establishmentID
-                       select row;
+                          where row.UserID == userID
+                          && row.EstablishmentID == establishmentID
+                          select row;
 
             if (uRating.Count() == 1)
             {
@@ -199,20 +224,13 @@ namespace GruppFemWCF
                 db.UserRating.Add(userRating);
                 db.SaveChanges();
             }
-            
-
-            selectedEstablishment = db.Establishment.Find(establishmentID);
-            selectedEstablishment.Name = name;
-            selectedEstablishment.Description = description;
-            db.Entry(selectedEstablishment).State = EntityState.Modified;
-            db.SaveChanges();
         }
 
         public bool LoginUser(string username, string password)
         {
-            
 
-            if(CheckUser(username, password) == true)
+
+            if (CheckUser(username, password) == true)
             {
                 return true;
             }
@@ -227,7 +245,8 @@ namespace GruppFemWCF
 
             var user = from row in db.User
                        where row.Username == username.ToUpper()
-                       && row.Password == password select row;
+                       && row.Password == password
+                       select row;
 
             if (user.Count() == 1)
             {
@@ -241,9 +260,9 @@ namespace GruppFemWCF
         public int GetUserID(string username, string password)
         {
             var user = (from row in db.User
-                      where row.Username == username.ToUpper()
-                      && row.Password == password
-                      select row.Id).First();
+                        where row.Username == username.ToUpper()
+                        && row.Password == password
+                        select row.Id).First();
             return user;
         }
     }
