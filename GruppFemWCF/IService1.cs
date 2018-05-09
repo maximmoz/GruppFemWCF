@@ -14,12 +14,6 @@ namespace GruppFemWCF
     {
 
         [OperationContract]
-        string GetData(int value);
-
-        [OperationContract]
-        CompositeType GetDataUsingDataContract(CompositeType composite);
-
-        [OperationContract]
         List<UserInfo> GetUserInfo();
 
         [OperationContract]
@@ -38,7 +32,8 @@ namespace GruppFemWCF
         int GetUserID(string username, string password);
         [OperationContract]
         List<EstablishmentInfo> GetEstablishments();
-
+        [OperationContract]
+        string GetUsername(int userID);
         // TODO: Add your service operations here
     }
 
